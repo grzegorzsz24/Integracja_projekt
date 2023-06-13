@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://yournamespace.com/movies"
+           xmlns:tns="http://yournamespace.com/movies"
+           elementFormDefault="qualified">
+
+    <xs:element name="GetAllMoviesRequest"/>
+    <xs:element name="GetAllMoviesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="movies" type="tns:Movie" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="Movie">
+        <xs:sequence>
+            <xs:element name="entityId" type="xs:long"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="releaseYear" type="xs:int"/>
+            <xs:element name="rank" type="xs:int"/>
+            <xs:element name="thumbnail" type="xs:string"/>
+            <xs:element name="rating" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="image" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="trailer" type="xs:string"/>
+<!--            <xs:element name="genres" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>-->
+<!--            <xs:element name="director" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>-->
+<!--            <xs:element name="writers" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>-->
+            <xs:element name="imdbid" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
