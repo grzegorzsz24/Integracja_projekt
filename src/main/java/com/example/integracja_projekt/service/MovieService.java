@@ -1,5 +1,8 @@
-package com.example.integracja_projekt;
+package com.example.integracja_projekt.service;
 
+import com.example.integracja_projekt.model.Movie;
+import com.example.integracja_projekt.model.MovieEntity;
+import com.example.integracja_projekt.repository.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +31,7 @@ public class MovieService {
                 movieEntity.setRank(movie.getRank());
                 movieEntity.setThumbnail(movie.getThumbnail());
                 movieEntity.setId(movie.getId());
-                movieEntity.setYear(movie.getYear());
+                movieEntity.setReleaseYear(movie.getYear());
                 movieEntity.setImage(movie.getImage());
                 movieEntity.setDescription(movie.getDescription());
                 movieEntity.setTrailer(movie.getTrailer());

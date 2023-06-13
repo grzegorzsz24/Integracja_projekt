@@ -1,11 +1,18 @@
-package com.example.integracja_projekt;
+package com.example.integracja_projekt.controller;
 
+import com.example.integracja_projekt.model.Movie;
+import com.example.integracja_projekt.model.MovieEntity;
+import com.example.integracja_projekt.repository.MovieRepository;
+import com.example.integracja_projekt.service.MovieService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import lombok.AllArgsConstructor;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.DefaultAsyncHttpClient;
 import org.asynchttpclient.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,18 +24,15 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api")
+@AllArgsConstructor
 public class MovieController {
     MovieService movieService;
-
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
-    }
-
+    MovieRepository movieRepository;
     private final String apiUrl = "https://imdb-top-100-movies.p.rapidapi.com/";
     private final String apiKey = "12188ae4ecmsha48db8f3bf2cbeep17749ejsn9b1f0617ac80";
 
     @GetMapping("/movies/xml")
-    public String exportTopMoviesXml() throws IOException {
+    public ResponseEntity<String> exportTopMoviesXml() throws IOException {
         AsyncHttpClient client = new DefaultAsyncHttpClient();
         CompletableFuture<String> futureResponse = client.prepareGet(apiUrl)
                 .addHeader("X-RapidAPI-Key", apiKey)
@@ -47,16 +51,21 @@ public class MovieController {
             XmlMapper xmlMapper = new XmlMapper();
             xmlMapper.writeValue(new File("movies.xml"), movies);
 
-            return "Plik XML został wygenerowany.";
+            return new ResponseEntity<String>("Plik XML został wygenerowany.", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Wystąpił błąd podczas generowania pliku XML.";
+            return new ResponseEntity<String>("Wystąpił błąd podczas generowania pliku XML.", HttpStatus.OK);
         }
     }
 
     @GetMapping("/movies/import")
-    public String importMovies() {
+    public ResponseEntity<String> importMovies() {
         movieService.importMovies();
-        return "Import danych z pliku JSON do bazy danych rozpoczęty.";
+        return new ResponseEntity<String>("Import danych z pliku JSON do bazy danych rozpoczęty.", HttpStatus.OK);
+    }
+
+    @GetMapping("/movies")
+    public ResponseEntity<?> getAllMovies() {
+        return new ResponseEntity<List<MovieEntity>>(movieRepository.findAll(), HttpStatus.OK);
     }
 }
