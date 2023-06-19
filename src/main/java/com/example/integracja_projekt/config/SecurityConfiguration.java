@@ -28,7 +28,7 @@ public class SecurityConfiguration {
         PathRequest.H2ConsoleRequestMatcher h2ConsoleRequestMatcher = PathRequest.toH2Console();
         http
                 .csrf(csrf -> csrf.ignoringRequestMatchers(h2ConsoleRequestMatcher).disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**", "/api/movies/**").permitAll()
                         .requestMatchers(h2ConsoleRequestMatcher).permitAll()
                         .anyRequest()
                         .authenticated())
